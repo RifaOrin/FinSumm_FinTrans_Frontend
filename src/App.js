@@ -3,6 +3,7 @@ import EngSumm from "./EngSumm";
 import BanglaSumm from "./BanglaSumm";
 import E2B from "./E2B";
 import B2E from "./B2E";
+import TextSummarizer from "./all";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/banglaSummary" element={<BanglaSumm />}></Route>
       <Route path="/e2bTranslation" element={<E2B />}></Route>
       <Route path="/b2eTranslation" element={<B2E />}></Route>
+      <Route path="/all" element={<TextSummarizer />}></Route>
       </Routes>
     </Router>
   );

@@ -1,8 +1,55 @@
-function E2B(){
-    return(
+import React, { useState } from "react";
+import axios from "axios";
+
+const E2B = () => {
+    const [text, setText] = useState("");
+    const [translation, setTranslate] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
+    const handleTextChange = (e) => {
+        setText(e.target.value);
+    };
+
+    const handleTranslation = async () => {
+        setLoading(true);
+        setError("");
+        try {
+            const response = await axios.post(
+                "http://127.0.0.1:8000/translate/e2b/",
+                { text }
+            );
+            console.log(response.data);
+            setTranslate(response.data.translation);
+        } catch (err) {
+            setError("An error occurred while translating the text.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
         <div>
-            This is English To Bangla Translation
+            <h1>English to Bangla Translation</h1>
+            <textarea
+                value={text}
+                onChange={handleTextChange}
+                placeholder="Enter your text here"
+                rows="10"
+                cols="50"
+            />
+            <br />
+            <button onClick={handleTranslation}>Translate</button>
+            {loading && <div>Loading...</div>}
+            {error && <div style={{ color: "red" }}>{error}</div>}
+            {translation && (
+                <div>
+                    <h2>Translation</h2>
+                    <p>{translation}</p>
+                </div>
+            )}
         </div>
     );
-}
+};
+
 export default E2B;
