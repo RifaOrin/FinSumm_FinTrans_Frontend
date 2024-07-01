@@ -8,6 +8,7 @@ function Home(){
             <p><Link to="/banglaSummary">Bangla Summary</Link></p>
             <p><Link to="/e2bTranslation">English To Bangla Translation</Link></p>
             <p><Link to="/b2eTranslation">Bangla to English Translation</Link></p>
+            <p><Link to="/all">All</Link></p>
         </div>
     );
 }
