@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./TextSummarizer.css";
+import { IoSend } from "react-icons/io5";
+import SideNav from "./SideNav";
+import Textbox from "./textbox";
 
 const TextSummarizer = () => {
     const [text, setText] = useState("");
@@ -10,6 +12,8 @@ const TextSummarizer = () => {
     const [loadingTranslate, setLoadingTranslate] = useState(false);
     const [error, setError] = useState("");
     const [language, setLanguage] = useState("english");
+    
+    
 
     const handleTextChange = (e) => {
         setText(e.target.value);
@@ -50,58 +54,94 @@ const TextSummarizer = () => {
             setLoadingTranslate(false);
         }
     };
+    const calculateRows = () => {
+        const lineBreaks = (text.match(/\n/g) || []).length; // Count '\n' characters
+        const totalLines = text.split('\n').length + lineBreaks; // Total lines including wrapped lines
 
+        return Math.min(Math.max(totalLines, 2), 5); // Minimum 3 rows, maximum 20 rows
+    };
+    
     return (
-        <div className="container">
-            <h1>Text Summarizer and Translator</h1>
-            <div className="button-group">
-                <button className={`lang-button ${language === "english" ? "active" : ""}`} onClick={() => handleLanguageChange("english")}>English</button>
-                <button className={`lang-button ${language === "bangla" ? "active" : ""}`} onClick={() => handleLanguageChange("bangla")}>Bengali</button>
-            </div>
-            <div className="input-section">
-                <textarea
-                    className="text-input"
-                    value={text}
-                    onChange={handleTextChange}
-                    placeholder={`Enter your text in ${language}`}
-                    rows="10"
-                    cols="50"
-                />
-                <button className="action-button" onClick={handleSummarize}>Summarize</button>
-                {loading && <div className="loading">Loading...</div>}
-                {error && <div className="error">{error}</div>}
-            </div>
-            {summary && (
-                <div className="result-section">
-                    <div className="summary-section">
-                        <h2>Summary</h2>
-                        <textarea
-                            className="summary-output"
-                            value={summary}
-                            readOnly
-                            rows="10"
-                            cols="50"
-                        />
-                        <button className="action-button" onClick={handleTranslation}>
-                            {language === "english" ? "Translate to Bengali" : "Translate to English"}
-                        </button>
+        <div className="flex h-screen overflow-hidden">
+            <SideNav />
+            <div className="flex-1 bg-white z-10 overflow-auto">
+                <div className="w-full h-16 pt-4 pl-7 bg-white border sticky top-0"><h1 className="text-2xl font-semibold text-gradient1">FinBriefs</h1></div>
+                <h1 className="text-4xl mt-10 mb-10 font-semibold text-gradient2 flex justify-center items-center">
+                    Text <span className="text-gradient3 ml-2 mr-2">Summarizer</span> and <span className="text-gradient1 ml-2">Translator</span>
+                </h1>
+
+                <div className="flex flex-col h-3/4">
+                    <div className="flex-1 flex items-center justify-center mb-3">
+                        {summary && (
+                            <div className="result-section p-4 bg-dark-white rounded-lg shadow-lg">
+                                <div className="summary-section mb-4">
+                                    <h2 className="text-md font-semibold mb-4 mt-2 ">Here is your summary</h2>
+                                    <textarea
+                                        className="text-sm w-full p-2 border rounded-lg resize-none"
+                                        value={summary}
+                                        readOnly
+                                        rows="5"
+                                        cols="50"
+                                    />
+                                    <button
+                                        className="action-button mt-4 bg-[#c417c4] hover:bg-[#a116a1] font-medium text-sm text-white px-4 py-2 rounded-lg"
+                                        onClick={handleTranslation}
+                                    >
+                                        {language === "english" ? "Translate to Bengali" : "Translate to English"}
+                                    </button>
+                                </div>
+                                {loadingTranslate && <div className="loading">Loading...</div>}
+                                {translation && (
+                                    <div className="translation-section mt-4">
+                                        <h2 className="text-md font-semibold mb-2">Translated Summary</h2>
+                                        <textarea
+                                            className="translate-output w-full p-2 border rounded-lg resize-none text-sm font-medium"
+                                            value={translation}
+                                            readOnly
+                                            rows="5"
+                                            cols="50"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
-                    {loadingTranslate && <div className="loading">Loading...</div>}
-                    {translation && (
-                        <div className="translation-section">
-                            <h2>Translated Text</h2>
+                    <div className="w-full pb-3 bg-white shadow-lg flex items-end justify-center sticky bottom-0">
+                    <div className="flex justify-center mt-2">
+                        <div className="w-full relative">
                             <textarea
-                                className="translate-output"
-                                value={translation}
-                                readOnly
-                                rows="10"
+                                className="w-full h-auto p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#a116a1] font-medium"
+                                value={text}
+                                onChange={handleTextChange}
+                                placeholder={`Enter your text in ${language} to summarize`}
+                                rows={calculateRows()}
                                 cols="50"
                             />
+                            <div className="absolute bottom-4 right-0 flex items-center mr-8">
+                                <button
+                                    className={`lang-button font-medium ${language === "english" ? "bg-[#a116a1] text-white" : "bg-gray-200 text-gray-700"} px-4 py-2 rounded-lg mr-2`}
+                                    onClick={() => handleLanguageChange("english")}
+                                >
+                                    En
+                                </button>
+                                <button
+                                    className={`lang-button font-medium ${language === "bangla" ? "bg-[#a116a1] text-white" : "bg-gray-200 text-gray-700"} px-4 py-2 rounded-lg`}
+                                    onClick={() => handleLanguageChange("bangla")}
+                                >
+                                    Bn
+                                </button>
+
+                                <IoSend className="action-button text-2xl ml-5 text-[#e45be4] hover:text-[#a116a1]" onClick={handleSummarize} />
+                            </div>
                         </div>
-                    )}
+                    </div>
+                        {loading && <div className="mt-2 text-blue-500">Loading...</div>}
+                        {error && <div className="mt-2 text-red-500">{error}</div>}
+                    </div>
                 </div>
-            )}
+            </div>
         </div>
+
     );
 };
 
