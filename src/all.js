@@ -34,6 +34,8 @@ const TextSummarizer = () => {
         try {
             const response = await axios.post(endpoint, { text }, { headers: { 'Content-Type': 'application/json' } });
             setSummary(response.data.summary);
+            // Clear the text area
+            setText('');
         } catch (err) {
             setError("An error occurred while summarizing the text.");
         } finally {
@@ -59,6 +61,12 @@ const TextSummarizer = () => {
         const totalLines = text.split('\n').length + lineBreaks; // Total lines including wrapped lines
 
         return Math.min(Math.max(totalLines, 2), 5); // Minimum 3 rows, maximum 20 rows
+    };
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          handleSummarize();
+        }
     };
     
     return (
@@ -113,6 +121,7 @@ const TextSummarizer = () => {
                                 className="w-full h-auto p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#a116a1] font-medium"
                                 value={text}
                                 onChange={handleTextChange}
+                                onKeyDown={handleKeyDown}
                                 placeholder={`Enter your text in ${language} to summarize`}
                                 rows={calculateRows()}
                                 cols="50"
