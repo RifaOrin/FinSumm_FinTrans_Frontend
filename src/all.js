@@ -68,6 +68,20 @@ const TextSummarizer = () => {
           handleSummarize();
         }
     };
+    const LoadingSpinner = () => (
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+            <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+        </div>
+    );
+    
+    const ErrorAlert = ({ message }) => (
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong className="font-bold">Error:</strong>
+                <span className="block sm:inline">{message}</span>
+            </div>
+        </div>
+    );
     
     return (
         <div className="flex h-screen overflow-hidden">
@@ -98,7 +112,7 @@ const TextSummarizer = () => {
                                         {language === "english" ? "Translate to Bengali" : "Translate to English"}
                                     </button>
                                 </div>
-                                {loadingTranslate && <div className="loading">Loading...</div>}
+                                {loadingTranslate && <LoadingSpinner />}
                                 {translation && (
                                     <div className="translation-section mt-4">
                                         <h2 className="text-md font-semibold mb-2">Translated Summary</h2>
@@ -144,8 +158,8 @@ const TextSummarizer = () => {
                             </div>
                         </div>
                     </div>
-                        {loading && <div className="mt-2 text-blue-500">Loading...</div>}
-                        {error && <div className="mt-2 text-red-500">{error}</div>}
+                        {loading && <LoadingSpinner />}
+                        {error && <ErrorAlert message={error} />}
                     </div>
                 </div>
             </div>
