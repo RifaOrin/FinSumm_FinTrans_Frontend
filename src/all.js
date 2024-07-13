@@ -136,41 +136,42 @@ const TextSummarizer = () => {
                     </div>
                     <div className="w-full pb-3 bg-white shadow-lg flex items-end justify-center sticky bottom-0">
                     <div className="flex justify-center mt-2">
-                        <div className="w-full relative">
-                        <textarea
-                                    className="w-full p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#a116a1] font-medium"
-                                    value={text}
-                                    onChange={handleTextChange}
-                                    onKeyDown={handleKeyDown}
-                                    placeholder={`Enter your text in ${language} to summarize`}
-                                    rows={calculateRows()}
-                                    cols="50"
-                                    disabled={!!summary || !!translation}
-                                />
-                                <div className="absolute bottom-4 right-0 flex items-center mr-8">
-                                    <button
-                                        className={`lang-button font-medium ${language === "english" ? "bg-[#a116a1] text-white" : "bg-gray-200 text-gray-700"} px-4 py-2 rounded-lg mr-2`}
-                                        onClick={() => handleLanguageChange("english")}
-                                        disabled={!!summary || !!translation}
-                                    >
-                                        En
-                                    </button>
-                                    <button
-                                        className={`lang-button font-medium ${language === "bangla" ? "bg-[#a116a1] text-white" : "bg-gray-200 text-gray-700"} px-4 py-2 rounded-lg`}
-                                        onClick={() => handleLanguageChange("bangla")}
-                                        disabled={!!summary || !!translation}
-                                    >
-                                        Bn
-                                    </button>
-                                    <button
-                                        className="action-button text-2xl ml-5 text-[#e45be4] hover:text-[#a116a1]"
-                                        onClick={handleSummarize}
-                                        disabled={!!summary || !!translation}
-                                    >
-                                        <IoSend />
-                                    </button>
-                            </div>
-                        </div>
+                    <div className="w-full p-4 border rounded-lg relative inline-flex focus:outline-none focus:ring-2 focus:ring-[#a116a1]" tabIndex="0">
+                    <textarea
+                        className="w-full p-4 resize-none focus:outline-none font-medium border-none"
+                        value={text}
+                        onChange={handleTextChange}
+                        onKeyDown={handleKeyDown}
+                        placeholder={`Enter your text in ${language} to summarize`}
+                        rows={calculateRows()}
+                        cols="50"
+                        disabled={!!summary || !!translation}
+                    />
+                    <div className="flex items-end mt-4 ml-4">
+                        <button
+                            className={`lang-button font-medium ${language === "english" ? "bg-[#a116a1] text-white" : "bg-gray-200 text-gray-700"} px-4 py-2 rounded-lg mr-2`}
+                            onClick={() => handleLanguageChange("english")}
+                            disabled={!!summary || !!translation}
+                        >
+                            En
+                        </button>
+                        <button
+                            className={`lang-button font-medium ${language === "bangla" ? "bg-[#a116a1] text-white" : "bg-gray-200 text-gray-700"} px-4 py-2 rounded-lg`}
+                            onClick={() => handleLanguageChange("bangla")}
+                            disabled={!!summary || !!translation}
+                        >
+                            Bn
+                        </button>
+                        <button
+                        className="action-button text-2xl ml-5 text-[#e45be4] hover:text-[#a116a1]" 
+                        onClick={handleSummarize}
+                        disabled={!!summary || !!translation} 
+                        >
+                        <IoSend/>
+                        </button>
+                    </div>
+                    </div>
+
                     </div>
                         {loading && <LoadingSpinner />}
                         {error && <ErrorAlert message={error} />}
