@@ -132,7 +132,7 @@ const TextSummarizer = () => {
                     <div className="flex justify-center mt-2">
                         <div className="w-full relative">
                             <textarea
-                                className="w-full h-auto p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#a116a1] font-medium"
+                                className="w-full p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#a116a1] font-medium"
                                 value={text}
                                 onChange={handleTextChange}
                                 onKeyDown={handleKeyDown}
